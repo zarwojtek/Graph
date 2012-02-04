@@ -8,14 +8,23 @@ class GraphAdjList extends GraphCommon implements Graph
         adjList.addEdge(v2, v1);
     }
     
-    public int getAdjUnvisitedVertex( int v) {
-        Util.LinkedListSingleChained<Integer> list = this.adjList.lists[v];
+    public Util.LinkedList<Integer[]> listKanten()
+    {
+        Util.LinkedList<Integer[]> kanten = new Util.LinkedListSingleChained<Integer[]>();
         
-        for(int i=0; i<list.length; i++) {
-            int v2 = list.getElement(i);
-            if( vertList[v2].wasVisited==false )
-                return v2;
-        }
+        for(int i=0; i<nVerts; i++) 
+            for(int j : adjList.lists[i])
+                kanten.append( new Integer[] {i, j} );
+        
+        return kanten;
+    }
+    
+    public int getAdjUnvisitedVertex( int v) 
+    {
+        for(int adjv : adjList.lists[v])
+            if( !vertList[adjv].wasVisited )
+                return adjv;
+        
         return -1;
     }
 }

@@ -1,5 +1,6 @@
 package Util;
 
+import java.util.Iterator;
 
 public class LinkedListSingleChained<T> implements LinkedList<T>
 {
@@ -14,7 +15,25 @@ public class LinkedListSingleChained<T> implements LinkedList<T>
         }
     }
     
-    public int length;
+    class MyIterator implements Iterator<T>
+    {
+        private int cur;
+        public MyIterator() {
+            cur = 0;
+        }
+        public boolean hasNext(){
+            return cur < length;
+        }
+        public T next(){
+            if(hasNext())
+                return getElement(cur++);
+            else
+                return null;
+        }
+        public void remove(){};
+    }
+    
+    private int length;
     private Node<T> head_dummy;
     private Node<T> tail_dummy;
     
@@ -22,6 +41,14 @@ public class LinkedListSingleChained<T> implements LinkedList<T>
         this.length = 0;
         this.head_dummy = new Node<T>(null);
         this.tail_dummy = new Node<T>(null);
+    }
+    
+    public Iterator<T> iterator(){
+        return new MyIterator();
+    }
+    
+    public int getLength() {
+        return this.length;
     }
     
     private Node<T> getnNode(int n) {
@@ -65,7 +92,7 @@ public class LinkedListSingleChained<T> implements LinkedList<T>
             
         to_rm.next = null;
         
-        this.length--;
+        length--;
     }
     
 }

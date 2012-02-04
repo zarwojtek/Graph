@@ -15,6 +15,11 @@ abstract class GraphCommon
     
     abstract public int getAdjUnvisitedVertex(int v);
     
+    public void visualize() 
+    {
+        new GraphTest((Graph)this);
+    }
+    
     public void dfs()
     {
         Util.Stack<Integer> theStack = new Util.StackLinkedList<Integer>();
