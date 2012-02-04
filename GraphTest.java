@@ -82,11 +82,13 @@ public class GraphTest extends Frame
         g.einfKnoten( new Knoten<Character>('c') );
         g.einfKnoten( new Knoten<Character>('d') );
         g.einfKnoten( new Knoten<Character>('e') );
+        g.einfKnoten( new Knoten<Character>('f') );
         
-        g.einfKante(1,2); // b-c
-        g.einfKante(3,4); // d-e
-        g.einfKante(0,3); // a-d
-        g.einfKante(3,2); // d-c
+        g.einfKante(0,1); // a-b
+        g.einfKante(0,2); // a-c
+        g.einfKante(2,3); // c-d
+        g.einfKante(2,4); // c-e
+        g.einfKante(3,5); // d-f
         
 //         for( Knoten kn : g.listKnoten() )
 //             if( kn != null) System.out.println(kn.getElement());
@@ -94,6 +96,7 @@ public class GraphTest extends Frame
 //         System.out.println(g.getAdjUnvisitedVertex(0));
 // 
         g.dfs();
+        g.bfs();
 //         
         
         app = new GraphTest(g);

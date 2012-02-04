@@ -8,6 +8,7 @@ interface Graph
     
     public int getAdjUnvisitedVertex( int v);
     public void dfs();
+    public void bfs();
     
     public void visualize();
 }

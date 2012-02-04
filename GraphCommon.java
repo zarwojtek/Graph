@@ -45,5 +45,35 @@ abstract class GraphCommon
         for(int i=0; i<this.nVerts; i++)
             this.vertList[i].wasVisited = false;
     }
+    
+    public void bfs()
+    {
+        Util.Queue<Integer> theQueue = new Util.QueueLinkedList<Integer>();
+        
+        int v1 = 0;
+        theQueue.enqueue(v1);
+        vertList[v1].wasVisited = true;
+        vertList[v1].display();
+        
+        while( theQueue.getLength() > 0 )
+        {
+            v1 = theQueue.dequeue();
+            while( true )
+            {
+                int v2 = getAdjUnvisitedVertex( v1 );
+                if(v2 == -1) 
+                    break;
+                else {
+                    vertList[v2].wasVisited = true;
+                    vertList[v2].display();
+                    theQueue.enqueue(v2);
+                }
+            }
+        }
+        
+        for(int i=0; i<this.nVerts; i++)
+            this.vertList[i].wasVisited = false;
+    }
+
 }
 
