@@ -1,18 +1,19 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 public class GraphTest extends Frame
 {
     private Closer handler;
     private Graph graph;
     
-    public GraphTest( Graph gra)
+    public GraphTest( Graph gra, String title)
     {
         this.graph = gra;
         
         handler = new Closer();
-        setTitle("Frame Title");
+        setTitle(title);
         setSize(640, 480);
         addWindowListener(handler);
         show();
@@ -38,9 +39,9 @@ public class GraphTest extends Frame
             else
                posTable.append( new Integer[] {x,y} );
             
-            y += 200;
-            if(y > 400) {
-                x += 200;
+            y += 150;
+            if(y > 450) {
+                x += 150;
                 y = 50;
             }
         }
@@ -70,36 +71,46 @@ public class GraphTest extends Frame
     }
 
 
-    public static void main(String[] args) {
-//         PApplet.main(new String[] { "MyProcessingSketch" });
-
+    public static void main(String[] args) 
+    {
+        Graph g = new GraphAdjList();
+        
         Frame app;
         
-        Graph g = new GraphAdjList();        
+        BufferedReader in = null;
+        
+        try {
+            in = new BufferedReader( new FileReader("Graph.txt") );
+        } catch( FileNotFoundException e) {
+            System.out.println("Graph.txt not found");
+        }
+        
+        try { 
+            int num = Integer.parseInt( in.readLine() );
+            
+            for( int i=0; i<num; i++)
+                g.einfKnoten( new Knoten<Integer>(i+1) );
+            
+            while(true)
+            {
+                String str;
+                str = in.readLine();
+                             
+                if( str==null || str.length()==0)
+                    break;
+                
+                String[] pair = str.split("-");
+                int v1 = Integer.parseInt(pair[0]);
+                int v2 = Integer.parseInt(pair[1]);
+                g.einfKante(v1-1, v2-1);
+            }
 
-        g.einfKnoten( new Knoten<Character>('a') );
-        g.einfKnoten( new Knoten<Character>('b') );
-        g.einfKnoten( new Knoten<Character>('c') );
-        g.einfKnoten( new Knoten<Character>('d') );
-        g.einfKnoten( new Knoten<Character>('e') );
-        g.einfKnoten( new Knoten<Character>('f') );
-        
-        g.einfKante(0,1); // a-b
-        g.einfKante(0,2); // a-c
-        g.einfKante(2,3); // c-d
-        g.einfKante(2,4); // c-e
-        g.einfKante(3,5); // d-f
-        
-//         for( Knoten kn : g.listKnoten() )
-//             if( kn != null) System.out.println(kn.getElement());
-//             
-//         System.out.println(g.getAdjUnvisitedVertex(0));
-// 
-        g.dfs();
-        g.bfs();
-//         
-        
-        app = new GraphTest(g);
+        }
+        catch (IOException ioe) {}
+       
+        app = new GraphTest( g, "example Graph" );
+        new GraphTest( g.dfs(), "DFS Graph");
+        new GraphTest( g.bfs(), "BFS Graph");
     }
 }
 

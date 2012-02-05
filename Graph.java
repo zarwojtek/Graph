@@ -7,8 +7,8 @@ interface Graph
     public Util.LinkedList<Integer[]> listKanten();
     
     public int getAdjUnvisitedVertex( int v);
-    public void dfs();
-    public void bfs();
+    public Graph dfs();
+    public Graph bfs();
     
     public void visualize();
 }

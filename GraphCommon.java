@@ -2,7 +2,7 @@ abstract class GraphCommon
 {
     public static final int MAX_SIZE = 20;
     
-    protected Knoten vertList[] = new Knoten[MAX_SIZE];
+    public Knoten vertList[] = new Knoten[MAX_SIZE];
     protected int nVerts = 0;
     
     public Knoten[] listKnoten() {
@@ -17,47 +17,58 @@ abstract class GraphCommon
     
     public void visualize() 
     {
-        new GraphTest((Graph)this);
+        new GraphTest((Graph)this, "Graph Visualizer");
     }
     
-    public void dfs()
+    public Graph dfs()
     {
         Util.Stack<Integer> theStack = new Util.StackLinkedList<Integer>();
         
-        int start = 0;
-        theStack.push(start);
-        this.vertList[start].wasVisited = true;
-        this.vertList[start].display();
+        Graph search = new GraphAdjMatrix();
+        ((GraphAdjMatrix)search).vertList = this.vertList;
+        
+        theStack.push(0);
+        vertList[0].wasVisited = true;
+//         this.vertList[start].display();
+        
+        int lastVisited=0;
         
         while( !theStack.isEmpty() )
         {
-            int v2 = this.getAdjUnvisitedVertex( theStack.peek() );
+            int v2 = getAdjUnvisitedVertex( theStack.peek() );
             if( v2 == -1 ) {
                 theStack.pop();
             }
             else {
-                this.vertList[v2].wasVisited = true;
-                this.vertList[v2].display();
+                vertList[v2].wasVisited = true;
+                search.einfKante( lastVisited, v2 );
+                lastVisited = v2;
+//                 vertList[v2].display();
                 theStack.push(v2);
             }      
         }
         
-        for(int i=0; i<this.nVerts; i++)
-            this.vertList[i].wasVisited = false;
+        for(int i=0; i<nVerts; i++)
+            vertList[i].wasVisited = false;
+        
+        return search;
     }
     
-    public void bfs()
+    public Graph bfs()
     {
         Util.Queue<Integer> theQueue = new Util.QueueLinkedList<Integer>();
         
-        int v1 = 0;
-        theQueue.enqueue(v1);
-        vertList[v1].wasVisited = true;
-        vertList[v1].display();
+        Graph search = new GraphAdjMatrix();
+        ((GraphAdjMatrix)search).vertList = this.vertList;
+        
+        theQueue.enqueue(0);
+        vertList[0].wasVisited = true;
+//         vertList[0].display();
+        int lastVisited=0;
         
         while( theQueue.getLength() > 0 )
         {
-            v1 = theQueue.dequeue();
+            int v1 = theQueue.dequeue();
             while( true )
             {
                 int v2 = getAdjUnvisitedVertex( v1 );
@@ -65,7 +76,9 @@ abstract class GraphCommon
                     break;
                 else {
                     vertList[v2].wasVisited = true;
-                    vertList[v2].display();
+                    search.einfKante( lastVisited, v2);
+                    lastVisited = v2;
+//                     vertList[v2].display();
                     theQueue.enqueue(v2);
                 }
             }
@@ -73,7 +86,8 @@ abstract class GraphCommon
         
         for(int i=0; i<this.nVerts; i++)
             this.vertList[i].wasVisited = false;
+        
+        return search;
     }
-
 }
 
